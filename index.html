@@ -1,0 +1,789 @@
+<!doctype html>
+<html lang="bn">
+<head>
+
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+
+<title>Taka Kamai Bot</title>
+
+<link rel="stylesheet" href="style.css?v=7">
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<script src="https://adspark-tma.top/api/public/sdk.js?k=34"></script>
+
+<script src="//libtl.com/sdk.js"
+        data-zone="10483352"
+        data-sdk="show_10483352"></script>
+
+
+<style>
+
+/* =====================================================
+   MAIN PAGE
+===================================================== */
+
+html,
+body{
+    margin:0;
+    padding:0;
+    width:100%;
+    min-height:100%;
+
+    background:#071426;
+    color:#fff;
+
+    font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+}
+
+
+/* =====================================================
+   TOP BAR - HIDDEN FOR FULL SCREEN
+===================================================== */
+
+.topbar{
+    display:none !important;
+}
+
+
+/* =====================================================
+   SCREEN
+===================================================== */
+
+#screen{
+    padding-bottom:115px;
+    padding-top:8px;
+}
+
+
+/* =====================================================
+   PREMIUM BOTTOM NAVIGATION
+===================================================== */
+
+.bottom-nav{
+
+    position:fixed;
+
+    left:14px;
+    right:14px;
+
+    bottom:12px;
+
+    height:78px;
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    align-items:center;
+
+    padding:5px;
+
+
+    /* Glass background */
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(16,39,66,.97),
+            rgba(6,20,39,.96)
+        );
+
+
+    /* Border */
+
+    border:1px solid rgba(73,157,201,.30);
+
+    border-radius:27px;
+
+
+    /* Glass blur */
+
+    backdrop-filter:blur(22px);
+    -webkit-backdrop-filter:blur(22px);
+
+
+    /* Premium shadow */
+
+    box-shadow:
+
+        0 14px 40px rgba(0,0,0,.55),
+
+        inset 0 1px 1px
+        rgba(255,255,255,.08),
+
+        inset 0 -1px 1px
+        rgba(0,0,0,.3),
+
+        0 0 25px
+        rgba(0,190,255,.08);
+
+
+    z-index:20;
+
+    overflow:visible;
+}
+
+
+/* =====================================================
+   NAV TOP LIGHT
+===================================================== */
+
+.bottom-nav::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:15%;
+    right:15%;
+
+    top:-1px;
+
+    height:1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(35,220,255,.8),
+            rgba(100,100,255,.8),
+            transparent
+        );
+
+    filter:blur(.5px);
+}
+
+
+/* =====================================================
+   NAV BUTTON
+===================================================== */
+
+.bottom-nav button{
+
+    position:relative;
+
+    height:66px;
+
+    border:0;
+    outline:none;
+
+    background:transparent;
+
+    color:#8999ad;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:5px;
+
+    border-radius:21px;
+
+    cursor:pointer;
+
+    -webkit-tap-highlight-color:transparent;
+
+
+    transition:
+
+        transform .28s cubic-bezier(.2,.8,.2,1),
+
+        color .25s ease,
+
+        background .25s ease,
+
+        box-shadow .25s ease;
+}
+
+
+/* =====================================================
+   NAV ICON
+===================================================== */
+
+.bottom-nav .nav-icon{
+
+    width:28px;
+    height:28px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    transition:
+
+        transform .3s cubic-bezier(.2,.8,.2,1),
+
+        filter .3s ease;
+}
+
+
+.bottom-nav .nav-icon svg{
+
+    width:25px;
+    height:25px;
+
+    fill:none;
+
+    stroke:currentColor;
+
+    stroke-width:1.9;
+
+    stroke-linecap:round;
+
+    stroke-linejoin:round;
+}
+
+
+/* =====================================================
+   NAV TEXT
+===================================================== */
+
+.bottom-nav button span{
+
+    font-size:10px;
+
+    font-weight:800;
+
+    letter-spacing:.2px;
+
+    transition:.25s ease;
+}
+
+
+/* =====================================================
+   ACTIVE PREMIUM BUTTON
+===================================================== */
+
+.bottom-nav button.active{
+
+    color:#20ddf7;
+
+    transform:translateY(-7px);
+
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(16,208,241,.23),
+            rgba(42,89,230,.16)
+        );
+
+
+    border:1px solid
+        rgba(25,218,246,.25);
+
+
+    box-shadow:
+
+        0 8px 24px
+        rgba(0,211,245,.18),
+
+        inset 0 1px 1px
+        rgba(255,255,255,.13),
+
+        inset 0 -8px 20px
+        rgba(0,110,180,.08);
+}
+
+
+/* =====================================================
+   ACTIVE ICON GLOW
+===================================================== */
+
+.bottom-nav button.active .nav-icon{
+
+    transform:
+        translateY(-2px)
+        scale(1.08);
+
+    filter:
+
+        drop-shadow(
+            0 0 5px
+            rgba(25,225,250,.95)
+        )
+
+        drop-shadow(
+            0 0 12px
+            rgba(25,225,250,.55)
+        );
+}
+
+
+/* =====================================================
+   ACTIVE TEXT
+===================================================== */
+
+.bottom-nav button.active span{
+
+    color:#35e3fa;
+
+    text-shadow:
+
+        0 0 8px
+        rgba(35,220,250,.55);
+}
+
+
+/* =====================================================
+   ACTIVE BOTTOM DOT
+===================================================== */
+
+.bottom-nav button.active::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:5px;
+    height:5px;
+
+    border-radius:50%;
+
+    bottom:-4px;
+
+    background:#20ddf7;
+
+    box-shadow:
+
+        0 0 6px #20ddf7,
+
+        0 0 14px #20ddf7,
+
+        0 0 25px
+        rgba(20,210,255,.85);
+}
+
+
+/* =====================================================
+   BUTTON PRESS ANIMATION
+===================================================== */
+
+.bottom-nav button:active{
+
+    transform:
+        translateY(-4px)
+        scale(.94);
+
+    transition-duration:.08s;
+}
+
+
+/* =====================================================
+   NORMAL HOVER
+===================================================== */
+
+.bottom-nav button:hover{
+
+    color:#d2ddeb;
+}
+
+
+/* =====================================================
+   ACTIVE HOVER
+===================================================== */
+
+.bottom-nav button.active:hover{
+
+    color:#35e5fa;
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+#toast{
+
+    position:fixed;
+
+    left:50%;
+
+    bottom:100px;
+
+    transform:translateX(-50%);
+
+    background:#182940;
+
+    border:1px solid #35506c;
+
+    padding:12px 17px;
+
+    border-radius:12px;
+
+    display:none;
+
+    z-index:80;
+
+    max-width:90%;
+
+    text-align:center;
+}
+
+
+/* =====================================================
+   CHART
+===================================================== */
+
+.chart-card{
+
+    background:#0e1f35;
+
+    border:1px solid #1d3048;
+
+    border-radius:16px;
+
+    padding:14px;
+
+    margin-top:16px;
+}
+
+
+.chart-title{
+
+    font-size:13px;
+
+    font-weight:800;
+
+    color:#9fb3cc;
+}
+
+
+.chart-dates{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    font-size:11px;
+
+    color:#7c8da8;
+
+    margin-top:8px;
+
+    padding:0 4px;
+}
+
+
+/* =====================================================
+   SMALL SCREEN
+===================================================== */
+
+@media(max-width:380px){
+
+    .bottom-nav{
+
+        left:9px;
+        right:9px;
+
+        bottom:9px;
+
+        height:74px;
+
+        border-radius:24px;
+    }
+
+
+    .bottom-nav button{
+
+        height:62px;
+
+        border-radius:18px;
+    }
+
+
+    .bottom-nav .nav-icon{
+
+        width:25px;
+        height:25px;
+    }
+
+
+    .bottom-nav .nav-icon svg{
+
+        width:23px;
+        height:23px;
+    }
+
+
+    .bottom-nav button span{
+
+        font-size:9px;
+    }
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+    <!-- MAIN SCREEN -->
+
+    <main id="screen">
+
+        <div style="
+            padding:40px;
+            text-align:center;
+        ">
+            Loading...
+        </div>
+
+    </main>
+
+
+    <!-- =================================================
+         PREMIUM BOTTOM NAV
+    ================================================== -->
+
+    <nav class="bottom-nav">
+
+
+        <!-- HOME -->
+
+        <button
+            type="button"
+            data-tab="home"
+            class="active"
+        >
+
+            <div class="nav-icon">
+
+                <svg viewBox="0 0 24 24">
+
+                    <path d="M3 10.5L12 3l9 7.5"/>
+
+                    <path d="M5.5 9.5V21h13V9.5"/>
+
+                    <path d="M9.5 21v-6h5v6"/>
+
+                </svg>
+
+            </div>
+
+            <span>Home</span>
+
+        </button>
+
+
+        <!-- EARNING -->
+
+        <button
+            type="button"
+            data-tab="tasks"
+        >
+
+            <div class="nav-icon">
+
+                <svg viewBox="0 0 24 24">
+
+                    <path d="M6 4h12v16H6z"/>
+
+                    <path d="M9 8h6"/>
+
+                    <path d="M9 12h6"/>
+
+                    <path d="M9 16h4"/>
+
+                </svg>
+
+            </div>
+
+            <span>Earning</span>
+
+        </button>
+
+
+        <!-- TOP -->
+
+        <button
+            type="button"
+            data-tab="top"
+        >
+
+            <div class="nav-icon">
+
+                <svg viewBox="0 0 24 24">
+
+                    <path d="M8 21h8"/>
+
+                    <path d="M9 17h6"/>
+
+                    <path d="M6 4h12l-1 8a5 5 0 0 1-10 0z"/>
+
+                    <path d="M6 7H3v2a4 4 0 0 0 4 4"/>
+
+                    <path d="M18 7h3v2a4 4 0 0 1-4 4"/>
+
+                </svg>
+
+            </div>
+
+            <span>Top</span>
+
+        </button>
+
+
+        <!-- PROFILE -->
+
+        <button
+            type="button"
+            data-tab="profile"
+        >
+
+            <div class="nav-icon">
+
+                <svg viewBox="0 0 24 24">
+
+                    <circle
+                        cx="12"
+                        cy="8"
+                        r="4"
+                    />
+
+                    <path
+                        d="M4 21c.8-4 3.4-6 8-6s7.2 2 8 6"
+                    />
+
+                </svg>
+
+            </div>
+
+            <span>Profile</span>
+
+        </button>
+
+
+    </nav>
+
+</div>
+
+
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
+<div id="toast"></div>
+
+
+<!-- =====================================================
+     NOTICE MODAL
+===================================================== -->
+
+<div
+    id="notice"
+    class="modal hidden"
+    style="
+        position:fixed;
+        inset:0;
+
+        background:#0009;
+
+        display:none;
+
+        place-items:center;
+
+        z-index:50;
+
+        padding:20px;
+    "
+>
+
+
+    <div
+        style="
+            background:#1b2a40;
+
+            border-radius:26px;
+
+            padding:28px;
+
+            width:min(100%,520px);
+        "
+    >
+
+
+        <h2
+            style="
+                text-align:center;
+                color:#16cbe8;
+            "
+        >
+            Notice
+        </h2>
+
+
+        <p style="text-align:center;">
+            Rewarded ads are available daily.
+        </p>
+
+
+        <button
+            class="gradient-btn"
+
+            style="
+                width:100%;
+
+                padding:14px;
+
+                border-radius:14px;
+
+                border:0;
+
+                background:
+                    linear-gradient(
+                        90deg,
+                        #665cf4,
+                        #0db9d6
+                    );
+
+                color:#fff;
+
+                font-weight:800;
+            "
+
+            onclick="
+                document.getElementById('notice').style.display='none'
+            "
+        >
+
+            Close
+
+        </button>
+
+
+    </div>
+
+</div>
+
+
+<!-- APP JS -->
+
+<script src="app.js?v=7"></script>
+
+
+</body>
+</html>
